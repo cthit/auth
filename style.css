@@ -1,0 +1,73 @@
+/*
+ * Malm was here! :D
+ */
+
+* {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 18px;
+	color: #444;
+	margin: 0;
+}
+
+#main {
+	width: 100%;
+}
+
+header {
+	background-color: #09CDDA;
+	box-shadow: 0 0 20px #000;
+	text-align: center;
+	padding: 20px;
+}
+
+header h1 {
+	text-shadow: 0 0 1px #000;
+}
+
+.half {
+	padding: 20px;
+	float: left;
+	width: 50%;
+}
+
+#content {
+	overflow: hidden;
+	margin: 0 20px;
+}
+
+table td:nth-child(1) {
+	padding: 1px 50px 0 0;
+}
+
+table input {
+	width: 100%
+}
+
+table, img {
+	margin: 20px auto;
+}
+
+img {
+	display: block;
+}
+
+.button {
+	background-color: #09CDDA;
+	box-shadow: 0 0 1px #000;
+	font: 1em helvetica;
+	height: 30px;
+	width: 100%;
+	border: 0;
+}
+
+@media screen and (max-width: 900px) {
+	.half {
+		width: 100%;
+	}
+}
+
