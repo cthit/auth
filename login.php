@@ -26,11 +26,11 @@ function redirect($success) {
 	header("Location: $redirect");
 }
 
-if ($ldap->authenticate($password)) { // Användaren loggas in med korrekta uppgifter
+if ($$ldap->user_exists() && ldap->authenticate($password)) { // Användaren loggas in med korrekta uppgifter
 	$auth->addToken($user);
 
 	redirect(true);
-} else if (!$ldap->user_exists() && $ldap->askChalmers() && $ldap->authChalmers($password)) { // Användaren finns ej i vår LDAP, men authar mot Chalmers
+} else if ($ldap->askChalmers() && $ldap->authChalmers($password)) { // Användaren finns ej i vår LDAP, men authar mot Chalmers
 	$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
 } else { // Fel användare eller lösenord
 	redirect(false);
