@@ -227,7 +227,7 @@ class ldap {
 		if ($out === 0)
 			exec("kdestroy");
 
-		return !$out;   // 0 in bash means success
+		return !($out === 0);   // 0 in bash means success
 
 	}
 }
