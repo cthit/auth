@@ -33,7 +33,7 @@ class ldap {
 	* Verify a user's existance
 	*/
 	public function user_exists() {
-		$user = $this->search("(uid=$this->user)");
+		$user = $this->search("(uid=".$this->user.")");
 		return isset($user);
 	}
 
