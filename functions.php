@@ -4,7 +4,8 @@ function is_signed_in() {
 	$token = $_COOKIE["chalmersItAuth"];
 	include "auth.php";
 	$auth = new auth();
-	return isset($auth->getUsername($token));
+	$user = $auth->getUsername($token);
+	return isset($user);
 }
 
 function is_admin() {
