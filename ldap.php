@@ -225,13 +225,13 @@ class ldap {
 		$command = "echo $passwd | kinit $uname";
 		exec($command, $op, $out);
 
-		if ($out > 1)
+		if ($out > 1) {
 			throw new Exception("Unknown error: kinit returned $out");
-
-		if ($out === 0)
+		} else { // ($out === 0)
 			exec("kdestroy");
+		}
 
-		return !($out === 0);   // 0 in bash means success
+		return $out === 0; // 0 in bash means success
 
 	}
 }
