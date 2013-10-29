@@ -26,7 +26,7 @@ function redirect($success) {
 	header("Location: $redirect");
 }
 
-if ($ldap->user_exists() && ldap->authenticate($password)) { // Användaren loggas in med korrekta uppgifter
+if ($ldap->user_exists() && $ldap->authenticate($password)) { // Användaren loggas in med korrekta uppgifter
 	$auth->addToken($user);
 
 	redirect(true);
