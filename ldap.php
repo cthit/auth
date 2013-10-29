@@ -86,12 +86,13 @@ class ldap {
 				);
 			}
 		}
-
+print_r($result);
 		if(sizeof($result) == 1 ) {
 			$result = $result[0];
 		}
+print_r($result);
 
-		return $result;
+		return isset($result) ? $result : false;
 	}
 
 	/**
