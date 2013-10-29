@@ -1,6 +1,7 @@
 <?php
 
-function is_signed_in($token) {
+function is_signed_in() {
+	$token = $_COOKIE["chalmersItAuth"];
 	include "auth.php";
 	$auth = new auth();
 	return !empty($auth->getUsername($token));
