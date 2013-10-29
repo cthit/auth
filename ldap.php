@@ -73,6 +73,10 @@ class ldap {
 		$users = ldap_get_entries($ldap_handle, $search_result);
 		ldap_unbind($ldap_handle);
 
+		if ($users["count"] === 0) {
+			return false;
+		}
+
 		foreach($users as $user) {
 			if(is_array($user)) {
 				$result[] = array(
@@ -91,7 +95,7 @@ class ldap {
 			$result = $result[0];
 		}
 
-		return isset($result) ? $result : false;
+		return $result;
 	}
 
 	/**
