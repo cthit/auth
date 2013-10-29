@@ -8,7 +8,6 @@ if(isset($_POST['username'], $_POST['password'])) {
 	$password = htmlentities($_POST['pwd']);
 	$wp = true;
 }
-
 require_once('ldap.php');
 require_once('auth.php');
 
@@ -20,7 +19,7 @@ function redirect($success) {
 	$purl = parse_url($url);
 	$redirect = $purl["scheme"] . "://" . $purl["host"];
 	if ($success) {
-		$redirect .= isset($purl["path"]) ? "/" . $purl["path"]:"" . (!empty($purl["query"]) ? "?" . $purl["query"]:"");
+		$redirect .= isset($purl["path"]) ? $purl["path"]:"" . (!empty($purl["query"]) ? "?" . $purl["query"]:"");
 	} else {
 		$redirect .= "/loggain/?err=1";
 	}

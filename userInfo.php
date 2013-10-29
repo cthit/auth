@@ -26,5 +26,5 @@ if(!$tokenUser['username']) {
 }
 
 header("Content-Type: application/json");
-echo $ldap->search('(uid='.$tokenUser['username'].')');
+echo json_encode($ldap->search('(uid='.$tokenUser['username'].')'));
 

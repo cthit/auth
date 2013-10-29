@@ -13,7 +13,6 @@ function askChalmers($cid) {
 			echo "No result\n";
 			return;
 		}
-		print_r($result);
 		foreach ($result as $key => $r) {
 			if ($key === "count") {
 				continue;

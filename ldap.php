@@ -33,7 +33,7 @@ class ldap {
 	* Verify a user's existance
 	*/
 	public function user_exists() {
-		$user = $this->get_userinfo($this->user);
+		$user = $this->search("(uid=$this->user)");
 		return isset($user);
 	}
 
@@ -43,7 +43,7 @@ class ldap {
 	public function authenticate($password) {
 		$ldap_handle = $this->connect();
 
-		$isSuccess = ldap_bind($ldap_handle, 'uid='.$this->user.',cn=users,'.$this->dn, $password);
+		$isSuccess = @ldap_bind($ldap_handle, 'uid='.$this->user.',cn=users,'.$this->dn, $password);
 		ldap_unbind($ldap_handle);
 
 		return $isSuccess;
@@ -91,15 +91,14 @@ class ldap {
 			$result = $result[0];
 		}
 
-		return json_encode($result);
+		return $result;
 	}
 
 	/**
 	* Get userinfo
 	*/
 	public function get_userinfo($cid) {
-		$user = $this->search("(uid=$cid)");
-		return json_decode($user, true);
+		return $this->search("(uid=$cid)");
 	}
 
 	/**
@@ -197,9 +196,8 @@ class ldap {
 		$ds = ldap_connect("ldap://ldap.chalmers.se");
 		if ($ds) {
 			$filter = '(cn=pr_ch_tkite)';
-			$search_result = ldap_search($ds, "ou=groups,dc=chalmers,dc=se", $filter, array("dn"));
+			$search_result = ldap_search($ds, "ou=groups,dc=chalmers,dc=se", $filter, array("member"));
 			$info = ldap_get_entries($ds, $search_result);
-
 			$result = NULL;
 			foreach($info[0]['member'] as $student) {
 				if(preg_match('/uid\='.$this->user.',/', $student)) {
@@ -220,9 +218,7 @@ class ldap {
 	public function authChalmers($password) {
 		$uname = escapeshellarg($this->user);
 		$passwd = escapeshellarg($password);
-
 		$command = "echo $passwd | kinit $uname";
-
 		exec($command, $op, $out);
 
 		if ($out > 1)
