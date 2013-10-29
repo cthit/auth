@@ -34,7 +34,7 @@ class ldap {
 	*/
 	public function user_exists() {
 		$user = $this->search("(uid=".$this->user.")");
-		return isset($user);
+		return $user !== false;
 	}
 
 	/**
@@ -86,11 +86,10 @@ class ldap {
 				);
 			}
 		}
-print_r($result);
+
 		if(sizeof($result) == 1 ) {
 			$result = $result[0];
 		}
-print_r($result);
 
 		return isset($result) ? $result : false;
 	}
