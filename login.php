@@ -2,12 +2,13 @@
 
 if(isset($_POST['username'], $_POST['password'])) { 
 	$user = htmlentities($_POST['username']);
-	$password = htmlentities($_POST['password']);
+	$password = $_POST['password'];
 } else if(isset($_POST['log'], $_POST['pwd'])) { 
 	$user = htmlentities($_POST['log']);
-	$password = htmlentities($_POST['pwd']);
+	$password = $_POST['pwd'];
 	$wp = true;
 }
+
 require_once('ldap.php');
 require_once('auth.php');
 
@@ -28,7 +29,6 @@ function redirect($success) {
 
 if ($ldap->user_exists() && $ldap->authenticate($password)) { // Användaren loggas in med korrekta uppgifter
 	$auth->addToken($user);
-
 	redirect(true);
 } else if ($ldap->askChalmers() && $ldap->authChalmers($password)) { // Användaren finns ej i vår LDAP, men authar mot Chalmers
 	$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
