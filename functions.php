@@ -9,7 +9,7 @@ function is_signed_in() {
 	return isset($user);
 }
 
-function set_signed_in() {
+function sign_in() {
 	global $user, $digit;
 	$token = $_COOKIE["chalmersItAuth"];
 	$user_data = file_get_contents("https://chalmers.it/auth/userInfo.php?token=" . $token);
