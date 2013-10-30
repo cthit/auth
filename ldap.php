@@ -58,6 +58,13 @@ class ldap {
 	}
 
 	/**
+	* Search for user in LDAP by cid (wrapper function)
+	*/
+	public function search_by_cid($cid) {
+		return $this->search("(uid=".$cid.")");
+	}
+
+	/**
 	* Search for user in LDAP 
 	*/
 	public function search($search_filter) {

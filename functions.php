@@ -1,15 +1,28 @@
 <?php
+global $user, $digit;
 
 function is_signed_in() {
-	$token = $_COOKIE["chalmersItAuth"];
-	include "auth.php";
-	$auth = new auth();
-	$user = $auth->getUsername($token);
+	global $user;
+	if (!isset($user)) {
+		sign_in();
+	}
 	return isset($user);
 }
 
+function set_signed_in() {
+	global $user, $digit;
+	$token = $_COOKIE["chalmersItAuth"];
+	$user_data = file_get_contents("https://chalmers.it/auth/userInfo.php?token=" . $token);
+	$user = json_decode($user_data);
+	$digit = in_array("digit", $user["groups"]);
+}
+
 function is_admin() {
-	return false; // Not implemented yet
+	global $digit;
+	if (!isset($user)) {
+		sign_in();
+	}
+	return $digit;
 }
 
 function render($filename) {
