@@ -71,14 +71,26 @@ class ldap {
 
 		$search_result = ldap_search($ldap_handle, 'cn=users,'.$this->dn, $search_filter, $attributes);
 		$users = ldap_get_entries($ldap_handle, $search_result);
-		ldap_unbind($ldap_handle);
 
 		if ($users["count"] === 0) {
+			ldap_unbind($ldap_handle);
 			return false;
 		}
 
+		$search_result = ldap_search($ldap_handle, 'ou=groups,'.$this->dn, "(cn=*)", array("cn", "memberuid"));
+		$groups_entries = ldap_get_entries($ldap_handle, $search_result);
+
+		ldap_unbind($ldap_handle);
 		foreach($users as $user) {
 			if(is_array($user)) {
+				$user_groups = array();
+				$cid = $user["uid"][0];
+				foreach($groups_entries as $group) {
+					if (in_array($cid, $group["memberuid"])) {
+						$user_groups[] = $group["cn"][0];
+					}
+				}
+
 				$result[] = array(
 				"cid" => $user["uid"][0],
 				"dn" => $user["dn"],
@@ -86,7 +98,8 @@ class ldap {
 				"lastname" => $user["sn"][0],
 				"mail" => $user["mail"][0],
 				"nick" => $user["displayname"][0],
-				"uidnumber" => $user["uidnumber"][0]
+				"uidnumber" => $user["uidnumber"][0],
+				"groups" => $user_groups
 				);
 			}
 		}
