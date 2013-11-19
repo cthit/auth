@@ -12,7 +12,7 @@
       <div class="navbar-form navbar-right">
         <?php if (is_signed_in()):
           if (is_admin()): ?>
-        <a href="#admin" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-wrench"></span> Admin</a>
+        <a href="admin.php" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-wrench"></span> Admin</a>
           <?php endif; ?>
           
         <a href="logout.php" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-off"></span> Logga ut</a>
