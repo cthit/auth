@@ -1,4 +1,9 @@
 <div class="page-header">
+	<?php 
+	global $notice;
+	if (isset($notice)) { ?>
+		<div class="alert alert-success"><?= $notice ?></div>
+	<?php } ?>
 	<div class="container">
 	<h1>Skapa ett konto till Chalmers IT!</h1>
 	</div>
@@ -11,11 +16,6 @@
 	</div>
 	<div class="col-lg-5 col-lg-offset-3">
 		<h3>Whitelista användare</h3>
-		<?php 
-		global $notice;
-		if (isset($notice)) { ?>
-			<div class="alert alert-success"><?= $notice ?></div>
-		<?php } ?>
 		<form role="form" class="form-horizontal" method="post">
 			<?php form_control("cid", "CID", "input", null, true); ?>
 			<div class="col-lg-offset-2 col-lg-10">
