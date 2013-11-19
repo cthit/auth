@@ -3,11 +3,12 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+	Malm && Ndushi
+	// digIT13
 
 # THANKS
 
-    <name>
+	All the ldap jedi knights of digIT13
 
 # TECHNOLOGY COLOPHON
 
