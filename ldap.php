@@ -214,12 +214,12 @@ class ldap {
 		// TODO: Do stuff
 	}
 
-	public function askChalmers() {
+	public function askChalmers($it = true) {
 		// Ask Kerberos about the lost souls roaming the Underworld.
 		//TODO: Batch in old users in some way, register?
 		$ds = ldap_connect("ldap://ldap.chalmers.se");
 		if ($ds) {
-			$filter = '(cn=pr_ch_tkite)';
+			$filter = $it ? '(cn=pr_ch_tkite)' : '';
 			$search_result = ldap_search($ds, "ou=groups,dc=chalmers,dc=se", $filter, array("member"));
 			$info = ldap_get_entries($ds, $search_result);
 			$result = NULL;
@@ -234,6 +234,7 @@ class ldap {
 			return $result;
 		}
 	}
+
 	/**
 	* Log in with the user to Chalmers to validate the password
 	*
