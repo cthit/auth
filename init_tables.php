@@ -11,3 +11,4 @@ function init_auth_tables() {
 	mysqli_query($con, "create table 'resetToken' (token char(40), username varchar(30) not null primary key, timestamp timestamp)");
 	mysqli_query($con, "create table 'whitelist' (cid varchar(30) primary key)");
 }
+init_auth_tables();
