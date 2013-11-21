@@ -185,7 +185,7 @@ class ldap {
 	* Generate password
 	*/
 	private function generatePassword($userpass) {
-		$salt = "b498fyhsofjkbc4kgrw8siufbi4ugsikjefni5uh";
+		$salt = mcrypt_create_iv(22, MCRYPT_DEV_URANDOM);
 		return "{SSHA}" . base64_encode(sha1($userpass . $salt, true) . $salt);
 	}
 
