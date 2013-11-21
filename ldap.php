@@ -1,5 +1,7 @@
 <?php
 
+require "config.php";
+
 /**
 * This class is doing all the hard work related to LDAP
 */
@@ -70,8 +72,8 @@ class ldap {
 	public function search($search_filter) {
 		$ldap_handle = $this->connect();
 
-		$username = '***REMOVED***';
-		$password = '***REMOVED***';
+		$username = LDAP_SEARCH_USER;
+		$password = LDAP_SEARCH_PASS;
 
 		$attributes = array('givenname','sn','mail','uidNumber','uid','displayName');
 		ldap_bind($ldap_handle, 'cn='.$username.','.$this->dn, $password);
@@ -129,8 +131,8 @@ class ldap {
 	* Add user to LDAP
 	*/
 	public function addUser($email, $nick, $new_passwd) {
-		$username = 'admin';
-		$password = '***REMOVED***';
+		$username = LDAP_ADMIN_USER;
+		$password = LDAP_ADMIN_PASS;
 
 		$ldap_handle = $this->connect();
 
@@ -193,8 +195,8 @@ class ldap {
 	* Replace the old password for a user.
 	*/
 	public function changePassword($newPassword) {
-		$username = 'admin';
-		$password = '***REMOVED***';
+		$username = LDAP_ADMIN_USER;
+		$password = LDAP_ADMIN_PASS;
 
 		$ldap_handle = $this->connect();
 

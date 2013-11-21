@@ -1,5 +1,7 @@
 <?php
 
+require "config.php";
+
 class auth {
 
 	private $cookieName;
@@ -69,9 +71,9 @@ class auth {
 
 	private function query($queries) {
 		$host = 'localhost';
-		$dbUser = 'auth';
-		$dbPass = 't8vRfWRUyVqVqB4a';
-		$db = 'auth';
+		$dbUser = DB_USER;
+		$dbPass = DB_PASS;
+		$db = DB_USER;
 
 		$con = mysqli_connect($host, $dbUser, $dbPass, $db);
 
