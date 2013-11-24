@@ -48,12 +48,12 @@ class auth {
 	}
 
 	public function addToWhitelist($username) {
-		$query = "INSERT INTO whitelist ('cid') VALUES('$username')";
-		$res = $this->query($query);
+		$query = 'INSERT INTO whitelist (cid) VALUES("'.$username.'")';
+		$res = $this->query(array($query));
 	}
 
 	public function removeFromWhitelist($username) {
-		$query = "DELETE FROM whitelist WHERE cid = '$username'";
+		$query = 'DELETE FROM whitelist WHERE cid = "'.$username.'"';
 		$this->query($query);
 	}
 
