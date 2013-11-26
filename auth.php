@@ -44,7 +44,7 @@ class auth {
 
 	public function isWhitelisted($username) {
 		$query = 'SELECT * FROM whitelist WHERE cid = "'.$username.'"';
-		return sizeof($this->query(array($query)) > 0);
+		return sizeof($this->query(array($query))) > 0;
 	}
 
 	public function addToWhitelist($username) {
