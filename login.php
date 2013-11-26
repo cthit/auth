@@ -31,6 +31,8 @@ if ($ldap->user_exists()) {
 	if($ldap->authenticate($password)) { // Användaren loggas in med korrekta uppgifter
 		$auth->addToken($user);
 		redirect(true);
+	} else {
+		redirect(false);
 	}
 } else if ($auth->isWhitelisted($user) && $ldap->authChalmers($password)) {
 	$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
