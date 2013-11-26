@@ -13,7 +13,8 @@ require("auth.php");
 $ldap = new ldap($cid);
 $auth = new auth();
 
-if ($ldap->askChalmers() && $ldap->authChalmers($old_passwd)) {
+if (($ldap->askChalmers(true) || $ldap->askChalmers(false) && $auth->isWhitelisted($cid))
+&& $ldap->authChalmers($old_passwd)) {
 	$error = $ldap->addUser($email, $nick, $new_passwd);
 	if ($error)
 		throw new Exception("didnt work");
