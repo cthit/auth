@@ -32,9 +32,9 @@ if ($ldap->user_exists() && $ldap->authenticate($password)) { // Användaren log
 	redirect(true);
 } else if ($ldap->askChalmers() && $ldap->authChalmers($password)) { // Användaren finns ej i vår LDAP, men authar mot Chalmers
 	$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
-//} else if ($auth->isWhitelisted($user) && $ldap->authChalmers($password)) {
-	//Combine this if-statement with the one above
-	//$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
+} else if ($auth->isWhitelisted($user) && $ldap->authChalmers($password)) {
+	// Combine this if-statement with the one above
+	$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
 } else { // Fel användare eller lösenord
 	redirect(false);
 	die("Invalid username or password");
