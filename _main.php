@@ -1,6 +1,6 @@
 <div class="page-header">
   <div class="container">
-    <h1>Välkommen till Chalmers IT:s Autentiseringssystem!</h1>
+    <h1>Välkommen till IT:s Autentiseringssystem!</h1>
   </div>
 </div>
 <div class="row">
