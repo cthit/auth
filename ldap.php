@@ -174,7 +174,7 @@ class ldap {
 		$user["displayname"] = $nick;
 		
 		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top");
-		$user["homeDirectory"] = "/home/$this->user";
+		$user["homeDirectory"] = "/home/chalmersit/$this->user";
 		$user["loginShell"] = "/bin/bash";
 		$user["userPassword"] = $this->generatePassword($password);
 		$user["uidNumber"] = $uid;
