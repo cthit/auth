@@ -1,5 +1,5 @@
 <div class="page-header">
-	<?php 
+	<?php
 	global $notice;
 	if (isset($notice)) { ?>
 		<div class="alert alert-success"><?= $notice ?></div>

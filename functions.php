@@ -29,14 +29,14 @@ function render($filename) {
 	include "_$filename.php";
 }
 
-function form_control($id, $text, $type = "input", $icon, $focus) { ?>
+function form_control($id, $text, $type = "text", $icon, $focus) { ?>
 	<div class="form-group">
-      <label for="<?= $id ?>" class="col-lg-2 control-label"><?= $text ?></label>
-      <div class="col-lg-10">
-        <div class="input-group">
-          <?php if (isset($icon)):?><span class="input-group-addon"><span class="glyphicon glyphicon-<?= $icon ?>"></span></span><?php endif; ?>
-          <input id="<?= $id ?>" <?= ((isset($focus) && $focus)?"autofocus":"") ?> name="<?= $id ?>" class="form-control" type="<?=$type?>" placeholder="<?= $text ?>"/>
-        </div>
-      </div>
-    </div>
+		<label for="<?= $id ?>" class="col-lg-2 control-label"><?= $text ?></label>
+		<div class="col-lg-10">
+			<div class="input-group">
+				<?php if (isset($icon)):?><span class="input-group-addon"><span class="glyphicon glyphicon-<?= $icon ?>"></span></span><?php endif; ?>
+				<input id="<?= $id ?>" <?= ((isset($focus) && $focus)?"autofocus":"") ?> name="<?= $id ?>" class="form-control" type="<?=$type?>" placeholder="<?= $text ?>"/>
+			</div>
+		</div>
+	</div>
 <?php }
