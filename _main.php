@@ -4,14 +4,14 @@
   if (isset($_GET["error"])) { 
     switch ($_GET["error"]) {
       case 'noadmin':
-        $error = 'Denna funktionen kräver administrationsrättigheter';
+	$error = '<strong>Fel:</strong> Denna funktionen kräver administrationsrättigheter';
         break;
       default:
-        $error = 'Okänt fel: "' . $_GET["error"] . '"';
+	$error = '<strong>Okänt fel:</strong> "' . $_GET["error"] . '"';
         break;
     }
     ?>
-    <div class="alert alert-danger"><?= $error ?></div>
+    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <?= $error ?></div>
   <?php } ?>
   <div class="container">
     <h1>Välkommen till IT:s Autentiseringssystem!</h1>
