@@ -221,15 +221,20 @@ class ldap {
 		//TODO: Batch in old users in some way, register?
 		$ds = ldap_connect("ldap://ldap.chalmers.se");
 		if ($ds) {
-			$filter = $it ? '(cn=pr_ch_tkite)' : '';
-			$search_result = ldap_search($ds, "ou=groups,dc=chalmers,dc=se", $filter, array("member"));
-			$info = ldap_get_entries($ds, $search_result);
 			$result = NULL;
-			foreach($info[0]['member'] as $student) {
-				if(preg_match('/uid\='.$this->user.',/', $student)) {
-					$res = ldap_search($ds, "ou=people,dc=chalmers,dc=se","(uid=$this->user)");
-					$this->chalmers_data = $result = ldap_get_entries($ds, $res);
-					break;
+			if($it) {
+				$res = ldap_search($ds, "ou=people,dc=chalmers,dc=se","(uid=$this->user)");
+				$this->chalmers_data = $result = ldap_get_entries($ds, $res);
+			} else {
+				$filter = '(cn=pr_ch_tkite)';
+				$search_result = ldap_search($ds, "ou=groups,dc=chalmers,dc=se", $filter, array("member"));
+				$info = ldap_get_entries($ds, $search_result);
+				foreach($info[0]['member'] as $student) {
+					if(preg_match('/uid\='.$this->user.',/', $student)) {
+						$res = ldap_search($ds, "ou=people,dc=chalmers,dc=se","(uid=$this->user)");
+						$this->chalmers_data = $result = ldap_get_entries($ds, $res);
+						break;
+					}
 				}
 			}
 			ldap_close($ds);
