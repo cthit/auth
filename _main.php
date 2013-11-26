@@ -11,7 +11,7 @@
         break;
     }
     ?>
-    <div class="alert alert-error"><?= $error ?></div>
+    <div class="alert alert-danger"><?= $error ?></div>
   <?php } ?>
   <div class="container">
     <h1>Välkommen till IT:s Autentiseringssystem!</h1>
