@@ -1,4 +1,18 @@
 <div class="page-header">
+  <?php 
+  $error = "";
+  if (isset($_GET["error"])) { 
+    switch ($_GET["error"]) {
+      case 'noadmin':
+        $error = 'Denna funktionen kräver administrationsrättigheter';
+        break;
+      default:
+        $error = 'Okänt fel: "' . $_GET["error"] . '"';
+        break;
+    }
+    ?>
+    <div class="alert alert-error"><?= $error ?></div>
+  <?php } ?>
   <div class="container">
     <h1>Välkommen till IT:s Autentiseringssystem!</h1>
   </div>
