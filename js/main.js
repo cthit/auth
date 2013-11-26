@@ -1,4 +1,7 @@
-$('#ldap-create-user-form').on('beforesubmit', function() {
-	var $this = $(this);
-	return $this.find('new_password').val() === $this.find('verify_password').val();
+$('#new_password, #verify_password').on('change', function() {
+	if ($('#new_password').val() !== $('#verify_password').val()) {
+		$('#verify_password')[0].setCustomValidity('Lösenorden matchar inte');
+	} else {
+		$('#verify_password')[0].setCustomValidity('');
+	}
 });
