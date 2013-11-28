@@ -37,7 +37,7 @@ if (isset($_GET["redirect_to"])) {
 				<label for="nick" class="col-lg-4 control-label">Nick:</label>
 				<div class="col-lg-8">
 					<div class="input-group col-lg-10">
-						<input id="nick" name="nick" required class="form-control" type="text" placeholder="Nick på IT"/>
+						<input id="nick" name="nick" required autofocus class="form-control" type="text" placeholder="Nick på IT"/>
 					</div>
 				</div>
 			</div>
