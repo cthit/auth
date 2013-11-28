@@ -88,6 +88,9 @@ class auth {
 
 		mysqli_close($con);
 
+		if (!$response) {
+			return false;
+		}
 		return mysqli_fetch_array($response);
 	}
 }
