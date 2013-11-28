@@ -1,4 +1,4 @@
-<div class="page-header">
+<?php global $username, $email; ?><div class="page-header">
 	<div class="container">
 		<h1>Har du ingen användare på chalmers.it än?</h1>
 	</div>
@@ -36,10 +36,10 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="mail" class="col-lg-4 control-label">Mail:</label>
+				<label for="email" class="col-lg-4 control-label">Mail:</label>
 				<div class="col-lg-8">
 					<div class="input-group col-lg-10">
-						<input id="mail" name="mail" required class="form-control" type="email" value="<?= $email ?>"/>
+						<input id="email" name="email" required class="form-control" type="email" value="<?= $email ?>"/>
 					</div>
 				</div>
 			</div>
