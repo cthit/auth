@@ -11,6 +11,9 @@ function is_signed_in() {
 
 function sign_in() {
 	global $user, $digit;
+	if (!isset($_COOKIE["chalmersItAuth"])) {
+		return;
+	}
 	$token = $_COOKIE["chalmersItAuth"];
 	$user_data = file_get_contents("https://chalmers.it/auth/userInfo.php?token=" . $token);
 	$user = json_decode($user_data, true);
