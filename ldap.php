@@ -56,7 +56,8 @@ class ldap {
 		// Add user to LDAP
 		$username = $this->user;
 		$email = $this->chalmers_data[0]["mail"][0]; // mail
-		require('index.php?page=create');
+		$_GET["page"] = "create";
+		require('index.php');
 	}
 
 	/**
