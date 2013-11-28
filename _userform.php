@@ -1,4 +1,10 @@
-<?php global $username, $email; ?><div class="page-header">
+<?php global $username, $email;
+
+if (isset($_GET["redirect_to"])) {
+	$redirect = $_GET["redirect_to"];
+} else {
+	$redirect = $_SERVER['HTTP_REFERER'];
+} ?><div class="page-header">
 	<div class="container">
 		<h1>Har du ingen användare på chalmers.it än?</h1>
 	</div>
