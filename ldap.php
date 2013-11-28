@@ -54,7 +54,7 @@ class ldap {
 	public function generateForm($password, $redirect) {
 		//echo "User is not in local LDAP db, but has successfully authenticated with Kerberos!";
 		// Add user to LDAP
-		global $username, $email;
+		global $username, $email, $password, $redirect;
 		$username = $this->user;
 		$email = $this->chalmers_data[0]["mail"][0]; // mail
 		$_GET["page"] = "create";

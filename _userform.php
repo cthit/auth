@@ -1,4 +1,4 @@
-<?php global $username, $email;
+<?php global $username, $email, $password, $redirect;
 
 if (isset($_GET["redirect_to"])) {
 	$redirect = $_GET["redirect_to"];

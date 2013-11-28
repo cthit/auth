@@ -6,7 +6,7 @@ function is_signed_in() {
 	if (!isset($user)) {
 		sign_in();
 	}
-	return isset($user);
+	return isset($user["cid"]);
 }
 
 function sign_in() {

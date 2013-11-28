@@ -26,7 +26,7 @@
 		 <form role="form" class="form-horizontal" method="post" action="/auth/login.php">
 			<?php
 				form_control("username", "CID", "input", "user", true);
-				form_control("password", "Lösenord", "password", "lock");
+				form_control("password", "Lösenord", "password", "lock", false);
 			?>
 			<div class="form-group">
 	<div class="col-lg-offset-2 col-lg-10">
