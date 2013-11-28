@@ -1,5 +1,9 @@
 <?php
 
+if (!isset($_POST["password"])) {
+	header("Location: " . $_SERVER["HTTP_REFERER"]);
+}
+
 $cid = $_POST["username"];
 $old_passwd = $_POST["password"];
 $email = $_POST["email"];
