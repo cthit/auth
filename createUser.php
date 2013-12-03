@@ -23,6 +23,7 @@ if (($ldap->askChalmers(true) || $ldap->askChalmers(false) && $auth->isWhitelist
 	if ($error)
 		throw new Exception("didnt work");
 	$auth->addToken($cid);
+	$auth->removeFromWhitelist($cid);
 	if (!empty($redirect)) {
 		header("Location: ".$redirect);
 	}
