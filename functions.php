@@ -17,7 +17,7 @@ function sign_in() {
 	$token = $_COOKIE["chalmersItAuth"];
 	$user_data = file_get_contents("https://chalmers.it/auth/userInfo.php?token=" . $token);
 	$user = json_decode($user_data, true);
-	$digit = in_array("digit", $user["groups"]);
+	$digit = ($user !== null) && in_array("digit", $user["groups"]);
 }
 
 function is_admin() {
