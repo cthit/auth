@@ -264,5 +264,8 @@ class ldap {
 		return $out === 0; // 0 in bash means success
 
 	}
+
+	public function getGroups() {
+	}
 }
 
