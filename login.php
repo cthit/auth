@@ -17,14 +17,14 @@ $ldap = new ldap($user);
 
 function redirect($success) {
 	$url = isset($_POST["redirect_to"]) ? $_POST["redirect_to"] : $_SERVER["HTTP_REFERER"];
-	$purl = parse_url($url);
+	/*$purl = parse_url($url);
 	$redirect = $purl["scheme"] . "://" . $purl["host"];
 	if ($success) {
 		$redirect .= isset($purl["path"]) ? $purl["path"]:"" . (!empty($purl["query"]) ? "?" . $purl["query"]:"");
 	} else {
 		$redirect .= "/loggain/?err=1";
-	}
-	header("Location: $redirect");
+	}*/
+	header("Location: $url");
 }
 
 if ($ldap->user_exists()) {

@@ -11,13 +11,13 @@ function is_signed_in() {
 
 function sign_in() {
 	global $user, $digit;
-	if (!empty($_COOKIE["chalmersItAuth"])) {
+	if (!isset($_COOKIE["chalmersItAuth"])) {
 		return;
 	}
 	$token = $_COOKIE["chalmersItAuth"];
 	$user_data = file_get_contents("https://chalmers.it/auth/userInfo.php?token=" . $token);
 	$user = json_decode($user_data, true);
-	$digit = ($user !== null) && in_array("digit", $user["groups"]);
+	$digit = isset($user, $user["groups"]) && in_array("digit", $user["groups"]);
 }
 
 function is_admin() {
