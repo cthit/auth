@@ -11,7 +11,7 @@ function is_signed_in() {
 
 function sign_in() {
 	global $user, $digit;
-	if (!isset($_COOKIE["chalmersItAuth"])) {
+	if (!empty($_COOKIE["chalmersItAuth"])) {
 		return;
 	}
 	$token = $_COOKIE["chalmersItAuth"];
