@@ -50,6 +50,14 @@ if (isset($_GET["redirect_to"])) {
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="confirm-mail" class="col-lg-4 control-label">Bekräfta mail:</label>
+				<div class="col-lg-8">
+					<div class="input-group col-lg-10">
+						<input id="confirm-mail" name="confirm-mail" required class="form-control" type="email" value="<?= $email ?>"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
 				<label for="new_password" class="col-lg-4 control-label">Välj nytt lösenord:</label>
 				<div class="col-lg-8">
 					<div class="input-group col-lg-10">
