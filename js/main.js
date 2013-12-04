@@ -5,8 +5,9 @@ $('#new_password, #verify_password').on('change', function() {
 		$('#verify_password')[0].setCustomValidity('');
 	}
 });
-$('#mail, #confirm-mail').on('change', function() {
-	if ($('#mail').val() !== $('#confirm-mail').val()) {
+$('#email, #confirm-mail').on('change', function() {
+	console.log($('#email').val(), $('#confirm-mail').val());
+	if ($('#email').val() !== $('#confirm-mail').val()) {
 		$('#confirm-mail')[0].setCustomValidity('Mailadresserna matchar inte');
 	} else {
 		$('#confirm-mail')[0].setCustomValidity('');
