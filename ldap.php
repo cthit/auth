@@ -97,7 +97,7 @@ class ldap {
 				$user_groups = array();
 				$cid = $user["uid"][0];
 				foreach($groups_entries as $group) {
-					if (in_array($cid, $group["memberuid"])) {
+					if (isset($group["memberuid"]) && in_array($cid, $group["memberuid"])) {
 						$user_groups[] = $group["cn"][0];
 					}
 				}
