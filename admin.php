@@ -1,6 +1,6 @@
-<?php require 'functions.php'; 
+<?php require 'functions.php';
 if (!is_admin()) {
-	header("Location: /auth/?error=noadmin");
+	header("Location: /auth/?err=noadmin");
 }
 if (isset($_POST['intent']) && $_POST['intent'] == 'whitelist') {
 	require 'auth.php';

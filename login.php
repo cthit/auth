@@ -1,9 +1,9 @@
 <?php
 
-if(isset($_POST['username'], $_POST['password'])) { 
+if(isset($_POST['username'], $_POST['password'])) {
 	$user = htmlentities($_POST['username']);
 	$password = $_POST['password'];
-} else if(isset($_POST['log'], $_POST['pwd'])) { 
+} else if(isset($_POST['log'], $_POST['pwd'])) {
 	$user = htmlentities($_POST['log']);
 	$password = $_POST['pwd'];
 	$wp = true;
@@ -17,13 +17,14 @@ $ldap = new ldap($user);
 
 function redirect($success) {
 	$url = isset($_POST["redirect_to"]) ? $_POST["redirect_to"] : $_SERVER["HTTP_REFERER"];
-	/*$purl = parse_url($url);
-	$redirect = $purl["scheme"] . "://" . $purl["host"];
-	if ($success) {
-		$redirect .= isset($purl["path"]) ? $purl["path"]:"" . (!empty($purl["query"]) ? "?" . $purl["query"]:"");
-	} else {
-		$redirect .= "/loggain/?err=1";
-	}*/
+	if (!$success) {
+		if (strpos($url, '?') !== false) {
+			$url += "&err=1";
+		} else {
+			$url += "?err=1";
+		}
+	}
+	die($url);
 	header("Location: $url");
 }
 

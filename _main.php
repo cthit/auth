@@ -1,11 +1,13 @@
 <div class="page-header">
 	<?php
 	$error = "";
-	if (isset($_GET["error"])):
-		switch ($_GET["error"]) {
+	if (isset($_GET["err"])):
+		switch ($_GET["err"]) {
 			case 'noadmin':
-				$error = '<strong>Fel:</strong> Denna funktionen kräver administrationsrättigheter';
+				$error = '<strong>Fel:</strong> Denna funktionen kräver administrationsrättigheter.';
 				break;
+			case: '1':
+				$error = '<strong>Fel:</strong> Du har angivit felaktiga inloggningsuppgifter.';
 			default:
 				$error = '<strong>Okänt fel:</strong> "' . $_GET["error"] . '"';
 				break;
