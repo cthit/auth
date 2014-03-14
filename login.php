@@ -24,7 +24,6 @@ function redirect($success) {
 			$url += "?err=1";
 		}
 	}
-	die($url);
 	header("Location: $url");
 }
 
