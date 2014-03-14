@@ -6,7 +6,7 @@
 			case 'noadmin':
 				$error = '<strong>Fel:</strong> Denna funktionen kräver administrationsrättigheter.';
 				break;
-			case: '1':
+			case '1':
 				$error = '<strong>Fel:</strong> Du har angivit felaktiga inloggningsuppgifter.';
 			default:
 				$error = '<strong>Okänt fel:</strong> "' . $_GET["error"] . '"';
