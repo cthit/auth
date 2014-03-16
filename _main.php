@@ -8,9 +8,9 @@
 				break;
 			case '1':
 				$error = '<strong>Fel:</strong> Du har angivit felaktiga inloggningsuppgifter.';
+				break;
 			default:
 				$error = '<strong>Okänt fel:</strong> "' . $_GET["error"] . '"';
-				break;
 		}
 		?>
 		<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <?= $error ?></div>
