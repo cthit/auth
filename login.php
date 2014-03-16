@@ -19,9 +19,9 @@ function redirect($success) {
 	$url = isset($_POST["redirect_to"]) ? $_POST["redirect_to"] : $_SERVER["HTTP_REFERER"];
 	if (!$success) {
 		if (strpos($url, '?') !== false) {
-			$url += "&err=1";
+			$url .= "&err=1";
 		} else {
-			$url += "?err=1";
+			$url .= "?err=1";
 		}
 	}
 	header("Location: $url");
