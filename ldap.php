@@ -196,10 +196,7 @@ class ldap {
 	/**
 	* Replace the old password for a user.
 	*/
-	public function changePassword($newPassword, $userpass_confirm) {
-		if ($newPassword != $userpass_confirm) {
-			return false;
-		}
+	public function changePassword($newPassword) {
 		$username = LDAP_ADMIN_USER;
 		$password = LDAP_ADMIN_PASS;
 

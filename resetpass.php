@@ -31,15 +31,17 @@ MAIL;
 	if (isset($_POST["token"])) {
 		$token = $_POST["token"];
 		$cid = $auth->getUsername($token, "resetToken", "use timelimit")[0];
+		$samePasswd = $_POST["password"] === $_POST["confirm-password"];
 	} else if (isset($_POST["cookie"])) {
 		$token = $_POST["cookie"];
 		$cid = $auth->getUsername($token)[0];
+		$samePasswd = true;
 	}
 
 
 	$ldap = new ldap($cid);
 
-	$result = $ldap->changePassword($_POST["password"], $_POST["confirm-password"]);
+	$result = $samePasswd && $ldap->changePassword($_POST["password"]);
 	if ($result) {
 		$auth->clearResetToken($cid);
 		# Password was reset
