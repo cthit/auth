@@ -4,9 +4,13 @@
 	$error = "";
 	if (isset($_GET["msg"])):
 		switch ($_GET["msg"]) {
-			case 'success':
+			case 'sent':
 				$type = 'success';
 				$error = '<strong>Lyckades!</strong> Kolla din inkorg!';
+				break;
+			case 'success':
+				$type = 'success';
+				$error = '<strong>Lyckades!</strong> Ditt lösenord är nu återställt!';
 				break;
 			case 'fail':
 				$error = '<strong>Fel:</strong> Felaktigt CID.';
@@ -59,6 +63,19 @@
 	<?php else: ?>
 	<div class="col-lg-4">
 		<p>Beskrivande text för inloggade användare</p>
+	</div>
+	<div class="col-lg-5 col-lg-offset-3">
+		<form role="form" class="form-horizontal" method="post" action="/auth/resetpass.php">
+			<input type="hidden" name="cookie" value="<?= $_COOKIE['chalmersItAuth'] ?>" />
+			<?php
+				form_control("password", "Lösenord", "password", "lock", true);
+			?>
+			<div class="form-group">
+	<div class="col-lg-offset-2 col-lg-10">
+		<button type="submit" class="btn btn-default" name="intent" value="reset">Byt lösenord</button>
+	</div>
+			</div>
+		</form>
 	</div>
 	<?php endif; ?>
 </div>

@@ -42,6 +42,10 @@
 	<?php else: ?>
 	<div class="col-lg-4">
 		<p>Beskrivande text för inloggade användare</p>
+		<form action="/auth/resetpass.php" method="post">
+			
+		</form>
+		<a href="/auth/?page=reset"
 	</div>
 	<?php endif; ?>
 </div>
