@@ -20,7 +20,7 @@ class ldap {
 
 	private function connect() {
 		$ldap_handle = ldap_connect($this->host);
-	
+
 		if(!$ldap_handle) {
 			throw new Exception('No connection to the server');
 		}
@@ -69,7 +69,7 @@ class ldap {
 	}
 
 	/**
-	* Search for user in LDAP 
+	* Search for user in LDAP
 	*/
 	public function search($search_filter) {
 		$ldap_handle = $this->connect();
@@ -139,22 +139,22 @@ class ldap {
 		$ldap_handle = $this->connect();
 
 		ldap_bind($ldap_handle, 'cn=admin,dc=chalmers,dc=it', $password);
-		
+
 		$base_dn = "cn=users," . $this->dn;
 
 		$sr = ldap_search($ldap_handle, $base_dn, "uidnumber=*", array("uidnumber"));
-		
+
 		$users = ldap_get_entries($ldap_handle, $sr);
 
 		$max = 0;
 		foreach($users as $user) {
 			if ($user["uidnumber"][0] > $max)
-				$max = $user["uidnumber"][0]; 
+				$max = $user["uidnumber"][0];
 		}
 
 		$user = $this->userArray($email, $nick, $new_passwd, $max+1);
 		ldap_add($ldap_handle, "uid=" . $this->user.",".$base_dn, $user);
-		
+
 		$error = ldap_error($ldap_handle);
 		ldap_unbind($ldap_handle);
 		return $error === 0;
@@ -174,7 +174,7 @@ class ldap {
 		$user["givenname"] = $this->chalmers_data[0]["givenname"][0]; // firstname
 		$user["mail"] = $mail;
 		$user["displayname"] = $nick;
-		
+
 		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top");
 		$user["homeDirectory"] = "/home/chalmersit/$this->user";
 		$user["loginShell"] = "/bin/bash";
@@ -196,7 +196,10 @@ class ldap {
 	/**
 	* Replace the old password for a user.
 	*/
-	public function changePassword($newPassword) {
+	public function changePassword($newPassword, $userpass_confirm) {
+		if ($newPassword != $userpass_confirm) {
+			return false;
+		}
 		$username = LDAP_ADMIN_USER;
 		$password = LDAP_ADMIN_PASS;
 
@@ -207,7 +210,7 @@ class ldap {
 		$replace = array('userpassword' => $this->generatePassword($newPassword));
 		$result = ldap_modify($ldap_handle, 'uid='.$this->user.',cn=users,dc=chalmers,dc=it', $replace);
 
-		ldap_unbind($ldap_handle);	
+		ldap_unbind($ldap_handle);
 		return $result;
 	}
 
@@ -268,4 +271,3 @@ class ldap {
 	public function getGroups() {
 	}
 }
-

@@ -14,25 +14,27 @@ if (isset($_POST["username"])) {
 	$headers = array(
 		"From: no-reply@chalmers.it"
 	);
+$message = <<<MAIL
+Hej {$user["firstname"]}!
 
-	$res = mail($user["mail"], "Chalmers IT Lösenordsåterställning", "Hej ". $user["firstname"] . "!\n\nFör att återställa ditt lösenord, klicka på följande länk: https://chalmers.it/auth/resetpass.php?token=$token", implode($headers, "\r\n"));
+För att återställa ditt lösenord, klicka på följande länk: <a href="https://chalmers.it/auth/?page=reset&token=$token">https://chalmers.it/auth/?page=reset&token=$token</a>
+MAIL;
 
-	if (!isset($_POST["no-redirect"]) || $_POST["no-redirect"] == "false") {
-		header("Location: http://beta.chalmers.it/loggain/?checkemail=confirm");
-	} else {
-		echo "Check inbox!";
-	}
+	$res = mail($user["mail"], "Chalmers IT Lösenordsåterställning", $message, implode($headers, "\r\n"));
+	header("Location: https://chalmers.it/auth/?page=reset&msg=success");
+
 } else if (isset($_GET["token"])) { ?>
 	<form method="post" action="resetpass.php">
 		<input name="password" type="password" />
+		<input name="confirm-password" type="password" />
 		<input type="hidden" name="token" value="<?=$_GET["token"]?>" />
 		<input type="submit" />
 	</form>
-<?php } else if (isset($_POST["password"], $_POST["token"]) || isset($_POST["password"], $_POST["cookie"])) {
+<?php } else if (isset($_POST["password"], $_POST["confirm-password"], $_POST["token"]) || isset($_POST["password"], $_POST["cookie"])) {
 	require("ldap.php");
 	require("auth.php");
 	$auth = new auth();
-	
+
 	if (isset($_POST["token"])) {
 		$token = $_POST["token"];
 		$cid = $auth->getUsername($token, "resetToken", "use timelimit")[0];
@@ -44,7 +46,7 @@ if (isset($_POST["username"])) {
 
 	$ldap = new ldap($cid);
 
-	$result = $ldap->changePassword($_POST["password"]);
+	$result = $ldap->changePassword($_POST["password"], $_POST["confirm-password"]);
 	if ($result) {
 		$auth->clearResetToken($cid);
 		echo "Changed password successfully.";

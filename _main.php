@@ -34,6 +34,7 @@
 			<div class="form-group">
 	<div class="col-lg-offset-2 col-lg-10">
 		<button type="submit" class="btn btn-primary" name="intent" value="login">Logga in</button>
+		<a href="/auth/?page=reset" class="btn btn-default">Återställ lösenord</a>
 	</div>
 			</div>
 		 </form>
