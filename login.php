@@ -17,7 +17,7 @@ $ldap = new ldap($user);
 
 function redirect($success) {
 	$url = isset($_POST["redirect_to"]) ? $_POST["redirect_to"] : $_SERVER["HTTP_REFERER"];
-	if (!$success) {
+	if (!$success || strpos($url, 'err=') !== false) {
 		if (strpos($url, '?') !== false) {
 			$url .= "&err=1";
 		} else {
