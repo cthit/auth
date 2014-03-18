@@ -47,8 +47,15 @@
 					form_control("password", "Lösenord", "password", "lock", true);
 					form_control("confirm-password", "Bekräfta", "password", "lock", true);
 				?>
+				<div class="form-group">
+			<div class="col-lg-offset-2 col-lg-10">
 				<button type="submit" class="btn btn-primary" name="intent" value="confirm">Återställ lösenord</button>
+			</div>
+				</div>
+			</form>
+		<?php endif; ?>
 		</div>
+
 	<?php else: ?>
 	<div class="col-lg-4">
 		<p>Beskrivande text för inloggade användare</p>
