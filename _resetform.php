@@ -13,7 +13,7 @@
 				$error = '<strong>Lyckades!</strong> Ditt lösenord är nu återställt!';
 				break;
 			case 'fail':
-				$error = '<strong>Fel:</strong> Felaktigt CID.';
+				$error = '<strong>Fel:</strong> Felaktigt CID eller ogiltig återställningslänk.';
 				break;
 			default:
 				$error = '<strong>Okänt fel:</strong> "' . $_GET["error"] . '"';

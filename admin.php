@@ -17,7 +17,7 @@ render('header');?>
 			<?php render('whitelist'); ?>
 			<hr>
 			<footer>
-				<p>&copy; <a href="http://digit.chalmers.it/">digIT</a> 2013</p>
+				<p>&copy; <a href="http://digit.chalmers.it/">digIT</a> 2014</p>
 			</footer>
 		</div>
 <?php render('footer');
