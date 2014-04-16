@@ -11,7 +11,7 @@ require_once('ldap.php');
 require_once('auth.php');
 
 $auth = new auth();
-$ldap = new ldap('***REMOVED***');
+$ldap = new ldap('digitproxy');
 
 $user = false;
 if (!$cid) {
@@ -20,6 +20,8 @@ if (!$cid) {
 	if (!$user) {
 		die('invalid token');
 	}
+} else {
+	$user = $cid;
 }
 
 $json = json_encode($ldap->search_by_cid($user));
