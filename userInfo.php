@@ -2,12 +2,11 @@
 $key = 'token';
 
 $token = isset($_POST[$key]) ? $_POST[$key] : (isset($_GET[$key]) ? $_GET[$key] : (isset($_COOKIE['chalmersItAuth']) ? $_COOKIE['chalmersItAuth'] : false));
-$cid = isset($_GET['cid']) ? $_GET['cid'];
+$cid = isset($_GET['cid']) ? $_GET['cid'] : false;
 if (!$token && !$cid) {
 	die('Need more params, read the documentation for more info');
 }
 
-die($token . $cid);
 require_once('ldap.php');
 require_once('auth.php');
 
