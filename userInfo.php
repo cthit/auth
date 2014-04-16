@@ -14,7 +14,7 @@ $auth = new auth();
 $ldap = new ldap('***REMOVED***');
 
 $user = false;
-if ($token) {
+if (!$cid) {
 	$tokenUser = $auth->getUsername($token);
 	$user = $tokenUser ? $tokenUser['username'] : null;
 	if (!$user) {
