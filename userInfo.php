@@ -1,13 +1,13 @@
 <?php
-function if_isset($map, $key = 'token') {
-	return isset($map[$key]) && htmlentities($map[$key]);
-}
-$token = if_isset($_POST) || if_isset($_GET) || if_isset($_COOKIE, 'chalmersItAuth') || false;
-$cid = if_isset($_GET, 'cid') || false;
+$key = 'token';
+
+$token = isset($_POST[$key]) ? $_POST[$key] : (isset($_GET[$key]) ? $_GET[$key] : (isset($_COOKIE['chalmersItAuth']) ? $_COOKIE['chalmersItAuth'] : false));
+$cid = isset($_GET['cid']) ? $_GET['cid'];
 if (!$token && !$cid) {
 	die('Need more params, read the documentation for more info');
 }
 
+die($token . $cid);
 require_once('ldap.php');
 require_once('auth.php');
 
@@ -17,7 +17,7 @@ $ldap = new ldap('***REMOVED***');
 $user = false;
 if ($token) {
 	$tokenUser = $auth->getUsername($token);
-	$user = $tokenUser && $tokenUser['username'];
+	$user = $tokenUser ? $tokenUser['username'] : null;
 	if (!$user) {
 		die('invalid token');
 	}
