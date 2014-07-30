@@ -1,7 +1,7 @@
-<?php require 'functions.php';
+<?php require 'functions.php'; require 'common.php';
 	render('header'); ?>
 	<div class="container"><?php
-		switch($_GET['page']) {
+		switch(get('page')) {
 			case 'create':
 				render('userform');
 				break;

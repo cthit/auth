@@ -1,19 +1,23 @@
 <?php
 
-if(isset($_POST['username'], $_POST['password'])) {
-	$user = htmlentities($_POST['username']);
-	$password = $_POST['password'];
-} else if(isset($_POST['log'], $_POST['pwd'])) {
-	$user = htmlentities($_POST['log']);
-	$password = $_POST['pwd'];
+require 'common.php';
+
+if (post('username') && post('password')) {
+	$username = htmlentities(post('username'));
+	$password = post('password');
+} else if (post('log') && post('pwd')) {
+	$username = htmlentities(post('log'));
+	$password = post('pwd');
 	$wp = true;
+} else {
+	die('Not enough parametes!');
 }
 
 require_once('ldap.php');
 require_once('auth.php');
 
 $auth = new auth();
-$ldap = new ldap($user);
+$ldap = new ldap($username);
 
 function redirect($success) {
 	$url = isset($_POST["redirect_to"]) ? $_POST["redirect_to"] : $_SERVER["HTTP_REFERER"];
@@ -29,12 +33,12 @@ function redirect($success) {
 
 if ($ldap->user_exists()) {
 	if($ldap->authenticate($password)) { // Användaren loggas in med korrekta uppgifter
-		$auth->addToken($user);
+		$auth->addToken($username);
 		redirect(true);
 	} else {
 		redirect(false);
 	}
-} else if ($auth->isWhitelisted($user) && $ldap->authChalmers($password)) {
+} else if ($auth->isWhitelisted($username) && $ldap->authChalmers($password)) {
 	$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
 } else if ($ldap->askChalmers() && $ldap->authChalmers($password)) { // Användaren finns ej i vår LDAP, men authar mot Chalmers
 	$ldap->generateForm($password, isset($_GET["redirect_to"])?$_GET["redirect_to"]:$_SERVER["HTTP_REFERER"]);
