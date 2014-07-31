@@ -14,7 +14,7 @@ class ldap {
 
 	public function __construct($user) {
 		$this->dn = 'DC=chalmers,DC=it';
-		$this->host = '192.168.0.8';
+		$this->host = 'dantooine.chalmers.it';
 		$this->user = $user;
 	}
 
