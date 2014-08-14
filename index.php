@@ -1,4 +1,4 @@
-<?php require 'functions.php'; require 'common.php';
+<?php require 'functions.php'; require_once 'common.php';
 	render('header'); ?>
 	<div class="container"><?php
 		switch(get('page')) {

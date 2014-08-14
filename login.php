@@ -1,6 +1,6 @@
 <?php
 
-require 'common.php';
+require_once 'common.php';
 
 if (post('username') && post('password')) {
 	$username = htmlentities(post('username'));
