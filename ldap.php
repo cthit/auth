@@ -181,7 +181,7 @@ class ldap {
 		$user["admissionYear"] = $userdata["admission_year"];
 		$user["acceptedUserAgreement"] = $userdata["accept_terms"];
 		if ($userdata["nollan_photo"] != null) {
-			$user["nollanPhoto"] = file_get_contents($userdata["nollan_photo"]["image"]);
+			$user["nollanPhoto;binary"] = file_get_contents($userdata["nollan_photo"]["image"]);
 		}
 
 		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top", "chalmersstudent");
