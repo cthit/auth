@@ -77,7 +77,7 @@ class ldap {
 		$username = LDAP_SEARCH_USER;
 		$password = LDAP_SEARCH_PASS;
 
-		$attributes = array('givenname','sn','mail','uidNumber','uid','displayName');
+		$attributes = array('givenname','sn','mail','uidNumber','uid','displayName', 'admissionYear', 'acceptedUserAgreement');
 		ldap_bind($ldap_handle, 'cn='.$username.','.$this->dn, $password);
 
 		$search_result = ldap_search($ldap_handle, 'cn=users,'.$this->dn, $search_filter, $attributes);
