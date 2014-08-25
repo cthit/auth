@@ -25,6 +25,10 @@ class ldap {
 			throw new Exception('No connection to the server');
 		}
 
+		# FIXME: debug only
+		ldap_set_option($ldap_handle, LDAP_OPT_DEBUG_LEVEL, 7);
+
+
 		ldap_set_option($ldap_handle, LDAP_OPT_PROTOCOL_VERSION, 3);
 		ldap_set_option($ldap_handle, LDAP_OPT_REFERRALS, 0);
 
@@ -182,9 +186,9 @@ class ldap {
 		$user["nickname"] = $userdata["nick"];
 		$user["admissionYear"] = $userdata["admission_year"];
 		$user["acceptedUserAgreement"] = $userdata["accept_terms"];
-		if ($userdata["nollan_photo"] != null) {
-			$user["nollanPhoto;binary"] = file_get_contents($userdata["nollan_photo"]["image"]);
-		}
+		// if ($userdata["nollan_photo"] != null) {
+		// 	$user["nollanPhoto;binary"] = file_get_contents($userdata["nollan_photo"]["image"]);
+		// }
 
 		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top", "chalmersstudent");
 		$user["homeDirectory"] = "/home/chalmersit/$this->user";
