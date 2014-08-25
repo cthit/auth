@@ -110,7 +110,9 @@ class ldap {
 				"mail" => $user["mail"][0],
 				"nick" => $user["displayname"][0],
 				"uidnumber" => $user["uidnumber"][0],
-				"groups" => $user_groups
+				"groups" => $user_groups,
+                "admissionYear" => $user["admissionyear"][0],
+                "acceptedUserAgreement" => $user["accepteduseragreement"][0]
 				);
 			}
 		}
