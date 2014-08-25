@@ -175,7 +175,7 @@ class ldap {
 		$user["cn"] = $this->chalmers_data[0]["cn"][0]; // firstname lastname
 		$user["sn"] = $this->chalmers_data[0]["sn"][0]; // lastname
 		$user["givenname"] = $this->chalmers_data[0]["givenname"][0]; // firstname
-		$user["mail"] = $userdata["mail"];
+		$user["mail"] = $userdata["email"];
 		$user["displayname"] = $userdata["nick"];
 		$user["nickname"] = $userdata["nick"];
 		$user["admissionYear"] = $userdata["admission_year"];
@@ -187,7 +187,7 @@ class ldap {
 		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top", "chalmersstudent");
 		$user["homeDirectory"] = "/home/chalmersit/$this->user";
 		$user["loginShell"] = "/bin/bash";
-		$user["userPassword"] = $this->generatePassword($password);
+		$user["userPassword"] = $this->generatePassword($userdata["pass"]);
 		$user["uidNumber"] = $uid;
 		$user["gidNumber"] = 502;
 

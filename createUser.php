@@ -25,7 +25,7 @@ if (($ldap->askChalmers(true) || $ldap->askChalmers(false) && $auth->isWhitelist
 		"pass" => $new_passwd,
 		"nick" => $nick,
 		"email" => $email,
-		"admissionYear" => $_POST["admissionYear"],
+		"admission_year" => $_POST["admission_year"],
 		"accept_terms" => $_POST["accept_terms"],
 		"nollan_photo" => search_image($cid)
 	);
