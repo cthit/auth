@@ -155,8 +155,11 @@ class ldap {
 				$max = $user["uidnumber"][0];
 		}
 
-		$user = $this->userArray($userdata, $max+1);
-		ldap_add($ldap_handle, "uid=" . $this->user.",".$base_dn, $user);
+		$ldap_data = $this->userArray($userdata, $max+1);
+		$dn = "uid=$this->user,$base_dn";
+		die($dn);
+
+		ldap_add($ldap_handle, $dn, $ldap_data);
 
 		$error = ldap_error($ldap_handle);
 		ldap_unbind($ldap_handle);
