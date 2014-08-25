@@ -25,10 +25,6 @@ class ldap {
 			throw new Exception('No connection to the server');
 		}
 
-		# FIXME: debug only
-		ldap_set_option($ldap_handle, LDAP_OPT_DEBUG_LEVEL, 7);
-
-
 		ldap_set_option($ldap_handle, LDAP_OPT_PROTOCOL_VERSION, 3);
 		ldap_set_option($ldap_handle, LDAP_OPT_REFERRALS, 0);
 
