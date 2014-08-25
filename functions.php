@@ -43,3 +43,20 @@ function form_control($id, $text, $type = "text", $icon, $focus) { ?>
 		</div>
 	</div>
 <?php }
+
+function search_image($cid) {
+	$it = new RecursiveDirectoryIterator("nollan-photos");
+	$it = new RecursiveIteratorIterator($it);
+	$it->rewind();
+
+	while($it->valid()) {
+		if (!$it->isDot()) {
+			$path = $it->getSubPathName();
+			if (strpos($path, "/$cid.jpg")) {
+				return array("image" => "nollan-photos/$path", "folder" => $it->getSubPath());
+			}
+		}
+		$it->next();
+	}
+	return null;
+}

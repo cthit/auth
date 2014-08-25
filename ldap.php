@@ -134,7 +134,7 @@ class ldap {
 	/**
 	* Add user to LDAP
 	*/
-	public function addUser($email, $nick, $new_passwd) {
+	public function addUser($userdata) { // $email, $nick, $new_passwd
 		$username = LDAP_ADMIN_USER;
 		$password = LDAP_ADMIN_PASS;
 
@@ -148,13 +148,14 @@ class ldap {
 
 		$users = ldap_get_entries($ldap_handle, $sr);
 
+		# FIXME: RACE CONDITIONS! 
 		$max = 0;
 		foreach($users as $user) {
 			if ($user["uidnumber"][0] > $max)
 				$max = $user["uidnumber"][0];
 		}
 
-		$user = $this->userArray($email, $nick, $new_passwd, $max+1);
+		$user = $this->userArray($userdata, $max+1);
 		ldap_add($ldap_handle, "uid=" . $this->user.",".$base_dn, $user);
 
 		$error = ldap_error($ldap_handle);
@@ -165,7 +166,7 @@ class ldap {
 	/**
 	* Construct an array with user details
 	*/
-	private function userArray($mail, $nick, $password, $uid) {
+	private function userArray($userdata, $uid) {
 		if ($this->chalmers_data == NULL) {
 			throw new Exception("Must call 'authChalmers' before");
 		}
@@ -174,10 +175,16 @@ class ldap {
 		$user["cn"] = $this->chalmers_data[0]["cn"][0]; // firstname lastname
 		$user["sn"] = $this->chalmers_data[0]["sn"][0]; // lastname
 		$user["givenname"] = $this->chalmers_data[0]["givenname"][0]; // firstname
-		$user["mail"] = $mail;
-		$user["displayname"] = $nick;
+		$user["mail"] = $userdata["mail"];
+		$user["displayname"] = $userdata["nick"];
+		$user["nickname"] = $userdata["nick"];
+		$user["admissionYear"] = $userdata["admission_year"];
+		$user["acceptedUserAgreement"] = $userdata["accept_terms"];
+		if ($userdata["nollan_photo"] != null) {
+			$user["nollanPhoto"] = file_get_contents($userdata["nollan_photo"]["image"]);
+		}
 
-		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top");
+		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top", "chalmersstudent");
 		$user["homeDirectory"] = "/home/chalmersit/$this->user";
 		$user["loginShell"] = "/bin/bash";
 		$user["userPassword"] = $this->generatePassword($password);
