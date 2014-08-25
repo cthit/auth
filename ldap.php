@@ -112,7 +112,7 @@ class ldap {
 				"uidnumber" => $user["uidnumber"][0],
 				"groups" => $user_groups,
                 "admissionYear" => $user["admissionyear"][0],
-                "acceptedUserAgreement" => $user["accepteduseragreement"][0]
+                "acceptedUserAgreement" => $user["accepteduseragreement"][0] == "TRUE"
 				);
 			}
 		}
