@@ -26,7 +26,7 @@ if (($ldap->askChalmers(true) || $ldap->askChalmers(false) && $auth->isWhitelist
 		"nick" => $nick,
 		"email" => $email,
 		"admission_year" => $_POST["admission_year"],
-		"accept_terms" => $_POST["accept_terms"],
+		"accept_terms" => $_POST["accept_terms"] === "on",
 		"nollan_photo" => search_image($cid)
 	);
 	$error = $ldap->addUser($userdata);
