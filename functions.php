@@ -1,4 +1,5 @@
 <?php
+require "config.php";
 global $user, $digit;
 
 function is_signed_in() {
