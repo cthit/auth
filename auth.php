@@ -11,7 +11,7 @@ class auth {
 
 	function __construct() {
 		$this->cookieName = 'chalmersItAuth';
-		$this->cookieDomain = '.chalmers.it';
+		$this->cookieDomain = COOKIE_DOMAIN;
 		$this->cookiePath = '/';
 		$this->onlySSL = false;
 	}
@@ -20,23 +20,23 @@ class auth {
 		$cookieExpire = time() + 31104000; //60*60*24*30*12;
 		$token = sha1(uniqid(rand(), true));
 
-		$query1 = 'DELETE FROM authToken WHERE username = "'. $username .'"';                                                                                              
+		$query1 = 'DELETE FROM authToken WHERE username = "'. $username .'"';
 		$query2 = 'INSERT INTO authToken (token, username) VALUES ("'.$token.'", "'.$username.'")';
 
 		setCookie($this->cookieName, $token, $cookieExpire, $this->cookiePath, $this->cookieDomain, $this->onlySSL);
 		$this->query(array($query1, $query2));
 	}
-	
+
 	public function addResetToken($username) {
 		$token = sha1(uniqid(rand(), true));
 
-		$query1 = 'DELETE FROM resetToken WHERE username = "'. $username .'"';                                                                                              
+		$query1 = 'DELETE FROM resetToken WHERE username = "'. $username .'"';
 		$query2 = 'INSERT INTO resetToken (token, username) VALUES ("'.$token.'", "'.$username.'")';
 
 		$res = $this->query(array($query1, $query2));
 		return $token;
 	}
-	
+
 	public function clearResetToken($username) {
 		$query = 'DELETE FROM resetToken WHERE username = "'. $username .'"';
 		$this->query(array($query));
@@ -88,8 +88,10 @@ class auth {
 
 		mysqli_close($con);
 
-		if (!$response) {
-			return false;
+		if (is_bool($response)) {
+            // response will be a boolean on failure or if the query is not a
+            // SELECT, SHOW, DESCRIBE or EXPLAIN
+			return $response;
 		}
 		return mysqli_fetch_array($response);
 	}

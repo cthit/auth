@@ -10,7 +10,7 @@ if (post('username') && post('password')) {
 	$password = post('pwd');
 	$wp = true;
 } else {
-	die('Not enough parametes!');
+	die('Not enough parameters to login!');
 }
 
 require_once('ldap.php');
