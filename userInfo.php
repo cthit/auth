@@ -18,7 +18,11 @@ if (!$cid) {
 	$tokenUser = $auth->getUsername($token);
 	$user = $tokenUser ? $tokenUser['username'] : null;
 	if (!$user) {
-		die('invalid token');
+		header("Content-Type: application/json");
+		$error = array(
+			"error" => "Invalid token"
+		);
+		die(json_encode($error));
 	}
 } else {
 	$user = $cid;
