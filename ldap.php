@@ -235,7 +235,7 @@ class ldap {
 		$ds = ldap_connect("ldap://ldap.chalmers.se");
 		if ($ds) {
 			$result = NULL;
-			if($it) {
+			if(!$it) {
 				$res = ldap_search($ds, "ou=people,dc=chalmers,dc=se","(uid=$this->user)");
 				$this->chalmers_data = $result = ldap_get_entries($ds, $res);
 			} else {
