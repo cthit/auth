@@ -22,7 +22,6 @@
 	    <ul class="nav navbar-nav">
 	      <li><a href="/auth/">Hem</a></li>
 	      <li><a href="/auth/?page=reset">Återställ lösenord</a></li>
-	      <li><a href="userInfo.php">UserInfo</a></li>
 	    </ul>
 	    <div class="navbar-form navbar-right">
 	      <?php if (is_signed_in()):
