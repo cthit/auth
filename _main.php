@@ -1,14 +1,14 @@
 <div class="page-header">
 <?php
-	$redir_value = "/auth";
+	$redir_value = "/";
 	if (get("redirect_to")) {
-		$redir_value = $_GET["redirect_to"];
+		$redir_value = get("redirect_to");
 	}
 
 
 	$error = "";
-	if (isset($_GET["err"])):
-		switch ($_GET["err"]) {
+	if (get("err")):
+		switch (get("err")) {
 			case 'noadmin':
 				$error = '<strong>Fel:</strong> Denna funktionen kräver administrationsrättigheter.';
 				break;
@@ -16,7 +16,7 @@
 				$error = '<strong>Fel:</strong> Du har angivit felaktiga inloggningsuppgifter.';
 				break;
 			default:
-				$error = '<strong>Okänt fel:</strong> "' . $_GET["error"] . '"';
+				$error = '<strong>Okänt fel:</strong> "' . get("error") . '"';
 		}
 		?>
 		<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> <?= $error ?></div>
