@@ -31,7 +31,7 @@
 		<p>Beskrivande text för ej inloggade användare</p>
 	</div>
 		<div class="col-lg-5 col-lg-offset-3">
-		 <form role="form" class="form-horizontal" method="post" action="/auth/login.php?redirect_to=<?= $redir_value?>">
+		 <form role="form" class="form-horizontal" method="post" action="/login.php?redirect_to=<?= $redir_value?>">
 			<input type="hidden" name="redirect_to" value="<?= $redir_value?>" />
 			<?php
 				form_control("username", "CID", "input", "user", true);
