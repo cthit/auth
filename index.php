@@ -1,4 +1,10 @@
 <?php require 'functions.php'; require_once 'common.php';
+
+if (post('log')) {
+	require 'login.php';
+	die();
+}
+
 	render('header'); ?>
 	<div class="container"><?php
 		switch(get('page')) {
