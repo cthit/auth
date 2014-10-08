@@ -17,11 +17,11 @@ if (isset($_POST["username"])) {
 $message = <<<MAIL
 Hej {$user["firstname"]}!
 
-För att återställa ditt lösenord, klicka på följande länk: https://chalmers.it/auth/?page=reset&token=$token
+För att återställa ditt lösenord, klicka på följande länk: https://account.chalmers.it/?page=reset&token=$token
 MAIL;
 
 	$res = mail($user["mail"], "Chalmers IT Lösenordsåterställning", $message, implode($headers, "\r\n"));
-	header("Location: https://chalmers.it/auth/?page=reset&msg=sent");
+	header("Location: https://account.chalmers.it/?page=reset&msg=sent");
 
 } else if (isset($_POST["password"], $_POST["confirm-password"], $_POST["token"]) || isset($_POST["password"], $_POST["cookie"])) {
 	require("ldap.php");
@@ -45,9 +45,9 @@ MAIL;
 	if ($result) {
 		$auth->clearResetToken($cid);
 		# Password was reset
-		header("Location: https://chalmers.it/auth/?page=reset&msg=success");
+		header("Location: https://account.chalmers.it/?page=reset&msg=success");
 	} else {
 		# Password was not reset
-		header("Location: https://chalmers.it/auth/?page=reset&msg=fail");
+		header("Location: https://account.chalmers.it/?page=reset&msg=fail");
 	}
 }

@@ -33,8 +33,7 @@
 	</div>
 		<div class="col-lg-5 col-lg-offset-3">
 		<?php if (!isset($_GET['token'])): ?>
-			<form role="form" class="form-horizontal" method="post" action="/auth/resetpass.php">
-				<input type="hidden" name="redirect_to" value="/auth" />
+			<form role="form" class="form-horizontal" method="post" action="/resetpass.php">
 				<?php
 					form_control("username", "CID", "input", "user", true);
 				?>
@@ -45,7 +44,7 @@
 				</div>
 			</form>
 		<?php else: ?>
-			<form role="form" class="form-horizontal" method="post" action="/auth/resetpass.php">
+			<form role="form" class="form-horizontal" method="post" action="/resetpass.php">
 				<input type="hidden" name="token" value="<?= $_GET['token'] ?>">
 				<?php
 					form_control("password", "Lösenord", "password", "lock", true);
@@ -65,7 +64,7 @@
 		<p>Beskrivande text för inloggade användare</p>
 	</div>
 	<div class="col-lg-5 col-lg-offset-3">
-		<form role="form" class="form-horizontal" method="post" action="/auth/resetpass.php">
+		<form role="form" class="form-horizontal" method="post" action="/resetpass.php">
 			<input type="hidden" name="cookie" value="<?= $_COOKIE['chalmersItAuth'] ?>" />
 			<?php
 				form_control("password", "Lösenord", "password", "lock", true);

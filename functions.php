@@ -16,7 +16,7 @@ function sign_in() {
 		return;
 	}
 	$token = $_COOKIE["chalmersItAuth"];
-	$user_data = file_get_contents(DOMAIN . "/auth/userInfo.php?token=" . $token);
+	$user_data = file_get_contents(DOMAIN . "/userInfo.php?token=" . $token);
 	$user = json_decode($user_data, true);
 	$digit = isset($user, $user["groups"]) && in_array("digit", $user["groups"]);
 }

@@ -40,7 +40,7 @@
 			<div class="form-group">
 	<div class="col-lg-offset-2 col-lg-10">
 		<button type="submit" class="btn btn-primary" name="intent" value="login">Logga in</button>
-		<a href="/auth/?page=reset" class="btn btn-default">Återställ lösenord</a>
+		<a href="/?page=reset" class="btn btn-default">Återställ lösenord</a>
 	</div>
 			</div>
 		 </form>
@@ -48,10 +48,10 @@
 	<?php else: ?>
 	<div class="col-lg-4">
 		<p>Beskrivande text för inloggade användare</p>
-		<form action="/auth/resetpass.php" method="post">
+		<form action="/resetpass.php" method="post">
 			
 		</form>
-		<a href="/auth/?page=reset"
+		<a href="/?page=reset"
 	</div>
 	<?php endif; ?>
 </div>

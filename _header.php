@@ -16,12 +16,12 @@
       <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 	  <div class="navbar-header">
-	    <a class="navbar-brand" href="/auth/">Chalmers IT Autentisering</a>
+	    <a class="navbar-brand" href="/">Chalmers IT Autentisering</a>
 	  </div>
 	  <div class="navbar-collapse collapse">
 	    <ul class="nav navbar-nav">
-	      <li><a href="/auth/">Hem</a></li>
-	      <li><a href="/auth/?page=reset">Återställ lösenord</a></li>
+	      <li><a href="/">Hem</a></li>
+	      <li><a href="/?page=reset">Återställ lösenord</a></li>
 	    </ul>
 	    <div class="navbar-form navbar-right">
 	      <?php if (is_signed_in()):
