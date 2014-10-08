@@ -58,7 +58,7 @@ class auth {
 	}
 
 	public function getUsername($token, $table="authToken", $date = null) {
-		$query = 'SELECT username FROM '.$table.' WHERE token = "' .$token. '"' . (isset($date)? ' AND DATEDIFF( NOW( ) , timestamp ) <=7':'');
+		$query = 'SELECT username FROM '.$table.' WHERE token = "' .$token. '"' . (isset($date)? ' AND DATEDIFF( NOW( ) , `timestamp` ) <=7':'');
 		return $this->query(array($query));
 	}
 
