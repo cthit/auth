@@ -70,7 +70,7 @@ class auth {
 	}
 
 	private function query($queries) {
-		$host = 'localhost';
+		$host = DB_HOST;
 		$dbUser = DB_USER;
 		$dbPass = DB_PASS;
 		$db = DB_USER;
