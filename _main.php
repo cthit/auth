@@ -28,7 +28,7 @@
 <div class="row">
 	<?php if (!is_signed_in()): ?>
 	<div class="col-lg-4">
-		<p>Beskrivande text för ej inloggade användare</p>
+		<p>Här loggar du in och styr ditt chalmers.it konto. Har du inte ett konto så påbörjar du skapningen genom att logga in med ditt cid och cid-lösenord, det som du använder när du loggar in på exempelvis Studentportalen.</p>
 	</div>
 		<div class="col-lg-5 col-lg-offset-3">
 		 <form role="form" class="form-horizontal" method="post" action="/login.php?redirect_to=<?= $redir_value?>">
