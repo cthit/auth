@@ -13,8 +13,8 @@ class ldap {
 	private $chalmers_data;
 
 	public function __construct($user) {
-		$this->dn = 'DC=chalmers,DC=it';
-		$this->host = 'dantooine.chalmers.it';
+		$this->dn = 'dc=chalmers,dc=it';
+		$this->host = LDAP_HOST;
 		$this->user = $user;
 	}
 
@@ -35,7 +35,7 @@ class ldap {
 	* Verify a user's existance
 	*/
 	public function user_exists() {
-		$user = $this->search("(uid=".$this->user.")");
+		$user = $this->search("(uid={$this->user})");
 		return $user !== false;
 	}
 
@@ -43,10 +43,13 @@ class ldap {
 	* Log in with the user to validate the password
 	*/
 	public function authenticate($password) {
-		$ldap_handle = $this->connect();
+		$user = $this->search_by_cid($this->user);
 
-		$isSuccess = @ldap_bind($ldap_handle, 'uid='.$this->user.',cn=users,'.$this->dn, $password);
-		ldap_unbind($ldap_handle);
+		$isSuccess = false;
+		if ($user) {
+			$isSuccess = @ldap_bind($ldap_handle, $user['dn'], $password);
+			ldap_unbind($ldap_handle);
+		}
 
 		return $isSuccess;
 	}
@@ -68,6 +71,31 @@ class ldap {
 		return $this->search("(uid=".$cid.")");
 	}
 
+	private function get_cn($dn) {
+		$eq_pos = strpos($dn, "=") + 1;
+		return substr($dn, $eq_pos, strpos($dn, ",") - $eq_pos);
+	}
+
+	private function group_of_groups($ldap_handle, $prev_dn, $groups, $level) {
+		if ($level > 2) {
+			return array();
+		}
+		$search_result = ldap_search($ldap_handle, $prev_dn, "(objectClass=*)", array('memberOf'));
+		$result = ldap_get_entries($ldap_handle, $search_result);
+		if ($result['count'] > 0 && isset($result[0]['memberof'])) {
+			foreach ($result[0]['memberof'] as $key => $dn) {
+				if ($key === 'count') {
+					continue;
+				}
+				if (strpos($dn, 'ou=posix') === false) {
+					$groups[] = $dn;
+				}
+				$groups = array_merge($groups, $this->group_of_groups($ldap_handle, $dn, $groups, $level + 1));
+			}
+		}
+		return $groups;
+	}
+
 	/**
 	* Search for user in LDAP
 	*/
@@ -77,45 +105,45 @@ class ldap {
 		$username = LDAP_SEARCH_USER;
 		$password = LDAP_SEARCH_PASS;
 
-		$attributes = array('givenname','sn','mail','uidNumber','uid','displayName', 'admissionYear', 'acceptedUserAgreement');
-		ldap_bind($ldap_handle, 'cn='.$username.','.$this->dn, $password);
+		ldap_bind($ldap_handle, "cn=$username,{$this->dn}", $password);
 
-		$search_result = ldap_search($ldap_handle, 'cn=users,'.$this->dn, $search_filter, $attributes);
+		$search_result = ldap_search($ldap_handle, "ou=people,{$this->dn}", $search_filter, array('*', 'memberof'));
 		$users = ldap_get_entries($ldap_handle, $search_result);
 
-		if ($users["count"] === 0) {
+		if ($users['count'] == 0) {
 			ldap_unbind($ldap_handle);
 			return false;
 		}
+		$user = $users[0];
 
-		$search_result = ldap_search($ldap_handle, 'ou=groups,'.$this->dn, "(cn=*)", array("cn", "memberuid"));
-		$groups_entries = ldap_get_entries($ldap_handle, $search_result);
-
-		ldap_unbind($ldap_handle);
-		foreach($users as $user) {
-			if(is_array($user)) {
-				$user_groups = array();
-				$cid = $user["uid"][0];
-				foreach($groups_entries as $group) {
-					if (isset($group["memberuid"]) && in_array($cid, $group["memberuid"])) {
-						$user_groups[] = $group["cn"][0];
-					}
+		$groups = array();
+		if ($user['memberof']['count'] > 0) {
+			foreach ($user['memberof'] as $key => $dn) {
+				if ($key === 'count') {
+					continue;
 				}
-
-				$result[] = array(
-				"cid" => $user["uid"][0],
-				"dn" => $user["dn"],
-				"firstname" => $user["givenname"][0],
-				"lastname" => $user["sn"][0],
-				"mail" => $user["mail"][0],
-				"nick" => $user["displayname"][0],
-				"uidnumber" => $user["uidnumber"][0],
-				"groups" => $user_groups,
-                "admissionYear" => $user["admissionyear"][0],
-                "acceptedUserAgreement" => $user["accepteduseragreement"][0] == "TRUE"
-				);
+				if (strpos($dn, 'ou=posix') === false) {
+					$groups[] = $dn;
+				}
+				$groups = $this->group_of_groups($ldap_handle, $dn, $groups, 0);
 			}
 		}
+		$groups = array_values(array_map(array($this, "get_cn"), array_unique($groups)));
+
+		ldap_unbind($ldap_handle);
+
+		$result[] = array(
+			"cid" => $user["uid"][0],
+			"dn" => $user["dn"],
+			"firstname" => $user["givenname"][0],
+			"lastname" => $user["sn"][0],
+			"mail" => $user["mail"][0],
+			"nick" => $user["nickname"][0],
+			"uidnumber" => $user["uidnumber"][0],
+			"groups" => $groups,
+	        "admissionYear" => $user["admissionyear"][0],
+	        "acceptedUserAgreement" => $user["accepteduseragreement"][0] == "TRUE"
+		);
 
 		if(sizeof($result) == 1 ) {
 			$result = $result[0];
@@ -135,25 +163,23 @@ class ldap {
 	* Add user to LDAP
 	*/
 	public function addUser($userdata) { // $email, $nick, $new_passwd
+		$ldap_handle = $this->connect();
+
 		$username = LDAP_ADMIN_USER;
 		$password = LDAP_ADMIN_PASS;
 
-		$ldap_handle = $this->connect();
+		ldap_bind($ldap_handle, "cn=$username,dc=chalmers,dc=it", $password);
 
-		ldap_bind($ldap_handle, 'cn=admin,dc=chalmers,dc=it', $password);
-
-		$base_dn = "cn=users," . $this->dn;
+		$base_dn = "ou=it,ou=people,{$this->dn}";
 
 		$sr = ldap_search($ldap_handle, $base_dn, "uidnumber=*", array("uidnumber"));
+
+		ldap_sort($ldap_handle, $sr, '-uidnumber');
 
 		$users = ldap_get_entries($ldap_handle, $sr);
 
 		# FIXME: RACE CONDITIONS! 
-		$max = 0;
-		foreach($users as $user) {
-			if ($user["uidnumber"][0] > $max)
-				$max = $user["uidnumber"][0];
-		}
+		$max = $users[0]["uidnumber"][0];
 
 		$ldap_data = $this->userArray($userdata, $max+1);
 		$dn = "uid=$this->user,$base_dn";
@@ -178,7 +204,6 @@ class ldap {
 		$user["sn"] = $this->chalmers_data[0]["sn"][0]; // lastname
 		$user["givenname"] = $this->chalmers_data[0]["givenname"][0]; // firstname
 		$user["mail"] = $userdata["email"];
-		$user["displayname"] = $userdata["nick"];
 		$user["nickname"] = $userdata["nick"];
 		$user["admissionYear"] = $userdata["admission_year"];
 		$user["acceptedUserAgreement"] = $userdata["accept_terms"];
@@ -186,12 +211,12 @@ class ldap {
 			$user["nollanPhoto"] = file_get_contents($userdata["nollan_photo"]["image"]);
 		}
 
-		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top", "chalmersstudent");
+		$user["objectClass"] = array("posixAccount", "chalmersstudent");
 		$user["homeDirectory"] = "/home/chalmersit/$this->user";
 		$user["loginShell"] = "/bin/bash";
 		$user["userPassword"] = $this->generatePassword($userdata["pass"]);
 		$user["uidNumber"] = $uid;
-		$user["gidNumber"] = 502;
+		$user["gidNumber"] = 4500;
 
 		return $user;
 	}
@@ -213,10 +238,10 @@ class ldap {
 
 		$ldap_handle = $this->connect();
 
-		ldap_bind($ldap_handle, 'cn=admin,dc=chalmers,dc=it', $password);
+		ldap_bind($ldap_handle, "cn=$username,dc=chalmers,dc=it", $password);
 
 		$replace = array('userpassword' => $this->generatePassword($newPassword));
-		$result = ldap_modify($ldap_handle, 'uid='.$this->user.',cn=users,dc=chalmers,dc=it', $replace);
+		$result = ldap_modify($ldap_handle, 'uid='.$this->user.',ou=it,ou=people,dc=chalmers,dc=it', $replace);
 
 		ldap_unbind($ldap_handle);
 		return $result;
@@ -274,8 +299,5 @@ class ldap {
 
 		return $out === 0; // 0 in bash means success
 
-	}
-
-	public function getGroups() {
 	}
 }
