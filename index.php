@@ -18,7 +18,7 @@ if (post('log')) {
 				render('main');
 		}?><hr>
 		<footer>
-			<p>&copy; <a href="http://digit.chalmers.it/">digIT</a> 2014</p>
+			<p>&copy; <a href="http://digit.chalmers.it/">digIT</a> 2015</p>
 		</footer>
 	</div>
 <?php render('footer'); ?>
