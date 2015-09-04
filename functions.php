@@ -21,7 +21,9 @@ function sign_in() {
 	# Don't print, return!
 	curl_setopt($curlh, CURLOPT_RETURNTRANSFER, true);
 	$user_data = curl_exec($curlh);
-
+	if ($user_data === false) {
+		die(curl_error($curlh));
+	}
 	$user = json_decode($user_data, true);
 	$digit = isset($user, $user["groups"]) && in_array("digit", $user["groups"]);
 }

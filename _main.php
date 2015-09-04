@@ -47,11 +47,15 @@
 		</div>
 	<?php else: ?>
 	<div class="col-lg-4">
-		<p>Beskrivande text för inloggade användare</p>
+		<table>
+			<th>Applikationer som kräver inloggning</th>
+			<tr><td><a href="https://bookit.chalmers.it"><h4>bookIT</h4></a></td></tr>
+			<tr><td><a href="https://hubbit.chalmers.it"><h4>hubbIT</h4></a></td></tr>
+		</table>
 		<form action="/resetpass.php" method="post">
 			
 		</form>
-		<a href="/?page=reset"
+		<a href="/?page=reset">Återställ ditt lösenord här</a>
 	</div>
 	<?php endif; ?>
 </div>
