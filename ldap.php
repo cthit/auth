@@ -14,12 +14,12 @@ class ldap {
 
 	public function __construct($user) {
 		$this->dn = 'DC=chalmers,DC=it';
-		$this->host = 'dantooine.chalmers.it';
+		$this->host = 'ldaps://ldap.chalmers.it';
 		$this->user = $user;
 	}
 
 	private function connect() {
-		$ldap_handle = ldap_connect($this->host);
+		$ldap_handle = ldap_connect($this->host, 636);
 
 		if(!$ldap_handle) {
 			throw new Exception('No connection to the server');
@@ -45,7 +45,7 @@ class ldap {
 	public function authenticate($password) {
 		$ldap_handle = $this->connect();
 
-		$isSuccess = @ldap_bind($ldap_handle, 'uid='.$this->user.',cn=users,'.$this->dn, $password);
+		$isSuccess = @ldap_bind($ldap_handle, 'uid='.$this->user.',ou=people,'.$this->dn, $password);
 		ldap_unbind($ldap_handle);
 
 		return $isSuccess;
@@ -77,10 +77,10 @@ class ldap {
 		$username = LDAP_SEARCH_USER;
 		$password = LDAP_SEARCH_PASS;
 
-		$attributes = array('givenname','sn','mail','uidNumber','uid','displayName', 'admissionYear', 'acceptedUserAgreement');
+		$attributes = array('givenname','sn','mail','uidNumber','uid','nickname', 'admissionYear', 'acceptedUserAgreement');
 		ldap_bind($ldap_handle, 'cn='.$username.','.$this->dn, $password);
 
-		$search_result = ldap_search($ldap_handle, 'cn=users,'.$this->dn, $search_filter, $attributes);
+		$search_result = ldap_search($ldap_handle, 'ou=people,'.$this->dn, $search_filter, $attributes);
 		$users = ldap_get_entries($ldap_handle, $search_result);
 
 		if ($users["count"] === 0) {
@@ -88,27 +88,28 @@ class ldap {
 			return false;
 		}
 
-		$search_result = ldap_search($ldap_handle, 'ou=groups,'.$this->dn, "(cn=*)", array("cn", "memberuid"));
+		$search_result = ldap_search($ldap_handle, 'ou=groups,'.$this->dn, "(cn=*)", array("cn", "member"));
 		$groups_entries = ldap_get_entries($ldap_handle, $search_result);
 
-		ldap_unbind($ldap_handle);
 		foreach($users as $user) {
 			if(is_array($user)) {
 				$user_groups = array();
-				$cid = $user["uid"][0];
+                $cid = $user["uid"][0];
+                $uid = $user["dn"];
 				foreach($groups_entries as $group) {
-					if (isset($group["memberuid"]) && in_array($cid, $group["memberuid"])) {
-						$user_groups[] = $group["cn"][0];
+					if (isset($group["member"])) {
+                        if ($this->check_group_recursive($ldap_handle, $uid, $group["dn"])) {
+                            $user_groups[] = $group["cn"][0];
+                        }
 					}
 				}
-
 				$result[] = array(
-				"cid" => $user["uid"][0],
-				"dn" => $user["dn"],
+				"cid" => $cid,
+				"dn" => $uid,
 				"firstname" => $user["givenname"][0],
 				"lastname" => $user["sn"][0],
 				"mail" => $user["mail"][0],
-				"nick" => $user["displayname"][0],
+				"nick" => $user["nickname"][0],
 				"uidnumber" => $user["uidnumber"][0],
 				"groups" => $user_groups,
                 "admissionYear" => $user["admissionyear"][0],
@@ -116,6 +117,7 @@ class ldap {
 				);
 			}
 		}
+		ldap_unbind($ldap_handle);
 
 		if(sizeof($result) == 1 ) {
 			$result = $result[0];
@@ -123,6 +125,30 @@ class ldap {
 
 		return $result;
 	}
+
+    public function check_group_recursive($ad, $userdn, $groupdn) {
+        $attributes = array('memberof');
+        $result = ldap_read($ad, $userdn, '(objectclass=*)', $attributes);
+        if ($result === false) {
+            return false;
+        }
+        $entries = ldap_get_entries($ad, $result);
+        if ($entries['count'] <= 0) {
+            return false;
+        }
+        if (empty($entries[0]['memberof'])) {
+            return false;
+        } else {
+            for ($i = 0; $i < $entries[0]['memberof']['count']; $i++) {
+                if ($entries[0]['memberof'][$i] == $groupdn) {
+                    return true;
+                } elseif ($this->check_group_recursive($ad, $entries[0]['memberof'][$i], $groupdn)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 	/**
 	* Get userinfo
@@ -148,7 +174,7 @@ class ldap {
 
 		$users = ldap_get_entries($ldap_handle, $sr);
 
-		# FIXME: RACE CONDITIONS! 
+		# FIXME: RACE CONDITIONS!
 		$max = 0;
 		foreach($users as $user) {
 			if ($user["uidnumber"][0] > $max)
