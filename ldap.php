@@ -166,7 +166,7 @@ class ldap {
 
 		$ldap_handle = $this->connect();
 
-		ldap_bind($ldap_handle, 'cn=admin,dc=chalmers,dc=it', $password);
+		ldap_bind($ldap_handle, 'cn='.$username.',dc=chalmers,dc=it', $password);
 
 		$base_dn = "ou=people," . $this->dn;
 
@@ -239,7 +239,7 @@ class ldap {
 
 		$ldap_handle = $this->connect();
 
-		ldap_bind($ldap_handle, 'cn=admin,dc=chalmers,dc=it', $password);
+		ldap_bind($ldap_handle, 'cn='.$username.',dc=chalmers,dc=it', $password);
 
 		$replace = array('userpassword' => $this->generatePassword($newPassword));
 		$result = ldap_modify($ldap_handle, 'uid='.$this->user.',ou=people,dc=chalmers,dc=it', $replace);
