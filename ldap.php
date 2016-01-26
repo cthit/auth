@@ -204,20 +204,16 @@ class ldap {
 		$user["sn"] = $this->chalmers_data[0]["sn"][0]; // lastname
 		$user["givenname"] = $this->chalmers_data[0]["givenname"][0]; // firstname
 		$user["mail"] = $userdata["email"];
-		$user["displayname"] = $userdata["nick"];
 		$user["nickname"] = $userdata["nick"];
 		$user["admissionYear"] = $userdata["admission_year"];
 		$user["acceptedUserAgreement"] = $userdata["accept_terms"];
-		if ($userdata["nollan_photo"] != null) {
-			$user["nollanPhoto"] = file_get_contents($userdata["nollan_photo"]["image"]);
-		}
 
-		$user["objectClass"] = array("inetOrgPerson", "posixAccount", "top", "chalmersstudent");
+		$user["objectClass"] = array("posixAccount", "top", "chalmersstudent");
 		$user["homeDirectory"] = "/home/chalmersit/$this->user";
 		$user["loginShell"] = "/bin/bash";
 		$user["userPassword"] = $this->generatePassword($userdata["pass"]);
 		$user["uidNumber"] = $uid;
-		$user["gidNumber"] = 502;
+		$user["gidNumber"] = 4500;
 
 		return $user;
 	}
