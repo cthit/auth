@@ -261,7 +261,7 @@ class ldap {
 				$res = ldap_search($ds, "ou=people,dc=chalmers,dc=se","(uid=$this->user)");
 				$this->chalmers_data = $result = ldap_get_entries($ds, $res);
 			} else {
-				$filter = '(cn=pr_ch_tkite)';
+				$filter = '(cn=s_passer_prog_tkite)';
 				$search_result = ldap_search($ds, "ou=groups,dc=chalmers,dc=se", $filter, array("member"));
 				$info = ldap_get_entries($ds, $search_result);
 				foreach($info[0]['member'] as $student) {
